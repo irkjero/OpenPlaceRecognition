@@ -30,6 +30,8 @@ class DinoV2(ImageModel):
             pooling = GlobalAvgPooling()
         elif pooling == "gmp":
             pooling = GlobalMaxPooling()
+        elif pooling is None:
+            pooling = torch.nn.Identity()
         else:
             raise NotImplementedError("Unknown pooling method: {}".format(pooling))
         

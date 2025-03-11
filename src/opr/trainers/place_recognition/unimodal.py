@@ -69,6 +69,9 @@ class UnimodalPlaceRecognitionTrainer:
         # logger = logging.getLogger(self.__class__.__name__)
 
         self.model = model
+        print(self.model)
+        for param in self.model.parameters():
+            param.requires_grad = True
         self.loss_fn = loss_fn
         self.optimizer = optimizer
         self.scheduler = scheduler
@@ -267,8 +270,9 @@ class UnimodalPlaceRecognitionTrainer:
 
                 with torch.set_grad_enabled(stage == "train"):
                     embeddings = self.model(batch)["final_descriptor"]
+                    print('Embeddings: ', embeddings.shape, embeddings.requires_grad)
                     loss, stats = self.loss_fn(embeddings, positives_mask, negatives_mask)
-
+                    print('loss: ', loss)
                 if stage == "train":
                     self.optimizer.zero_grad()
                     loss.backward()

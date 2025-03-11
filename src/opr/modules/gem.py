@@ -92,6 +92,7 @@ class GlobalAvgPooling(nn.Module):
         super().__init__()
 
     def forward(self, x: Tensor) -> Tensor:  # noqa: D102
+        print("Shape of X: ", x.shape)
         # Handle both [N,L,C] and [N,H,W,C] cases
         if len(x.shape) == 3:  # [N,L,C] case after stacking
             out = x.mean(dim=1)  # Pool over L dimension

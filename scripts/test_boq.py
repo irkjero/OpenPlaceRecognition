@@ -52,7 +52,7 @@ def main(cfg: DictConfig) -> None:
     model = instantiate(cfg.model)
     print(f"cfg.model: {cfg.model}")
     if weights_path is not None:
-        model.load_state_dict(torch.load(weights_path))
+        model.load_state_dict(torch.load(weights_path)["model_state_dict"])
     model = model.to(cfg.device)
     model.eval()
 

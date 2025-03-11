@@ -1,8 +1,8 @@
 defaults:
   - _self_
-  - dataset: nclt
+  - dataset: nclt_image
   - sampler: batch_sampler
-  - model: place_recognition/minkloc3d
+  - model: place_recognition/boq
   - loss: batch_hard_triplet_margin
   - optimizer: adam
   - scheduler: multi_step
@@ -16,7 +16,7 @@ device: cuda
 seed: 3121999
 num_workers: 4
 
-exp_name: ???
+exp_name: boq_train_full
 
-epochs: 80
+epochs: 5
 batch_expansion_threshold: 0.7

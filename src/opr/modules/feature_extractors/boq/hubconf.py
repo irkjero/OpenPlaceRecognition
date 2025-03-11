@@ -16,7 +16,7 @@ class VPRModel(torch.nn.Module):
     def forward(self, x):
         x = self.backbone(x)
         x, attns = self.aggregator(x)
-        return x, attns
+        return x
 
 
 AVAILABLE_BACKBONES = {

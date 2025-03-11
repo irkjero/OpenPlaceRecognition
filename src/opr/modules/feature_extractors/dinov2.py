@@ -67,6 +67,26 @@ class ViTBaseFeatureExtractor(nn.Module):
             Parameters:
             - img:   The input image
         """
+        if self.training:
+            res = self.model(img)
+            if self.fh_handle is not None:
+                if self.use_cls:
+                    res = self._hook_out
+                else:
+                    res = self._hook_out[:, 1:, ...]
+                if self.facet in ["query", "key", "value"]:
+                    d_len = res.shape[2] // 3
+                    if self.facet == "query":
+                        res = res[:, :, :d_len]
+                    elif self.facet == "key":
+                        res = res[:, :, d_len:2*d_len]
+                    else:
+                        res = res[:, :, 2*d_len:]
+                if self.norm_descs:
+                    res = F.normalize(res, dim=-1)
+            self._hook_out = None   # Reset the hook
+            return res
+
         with torch.no_grad():
             res = self.model(img)
             if self.fh_handle is not None:
@@ -140,4 +160,5 @@ class ViTBaseFeatureExtractor(nn.Module):
         return _forward_hook
     
     def __del__(self):
-        self.fh_handle.remove()
+        if self.fh_handle is not None:
+            self.fh_handle.remove()
